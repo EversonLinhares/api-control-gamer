@@ -1,5 +1,6 @@
 package com.ever.br.apicontas.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class User {
     @Column(name = "username", unique = true)
     private String username;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 

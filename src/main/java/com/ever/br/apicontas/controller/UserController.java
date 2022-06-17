@@ -26,7 +26,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponseDto> save (@Valid @RequestBody UserRequestDto userRequestDto){
+    public ResponseEntity<UserResponseDto> create (@Valid @RequestBody UserRequestDto userRequestDto){
         return ResponseEntity.ok().body(modelMapper
                 .map(userService.create(userRequestDto), UserResponseDto.class));
     }
@@ -35,6 +35,12 @@ public class UserController {
     public ResponseEntity<List<User>> findAll(){
           List<User> list = repository.findAll();
            return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> findById(@PathVariable Long id){
+        return ResponseEntity.ok().body(modelMapper
+                .map(userService.findById(id), UserResponseDto.class));
     }
 
 }
