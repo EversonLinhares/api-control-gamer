@@ -10,6 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.net.PasswordAuthentication;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -38,4 +40,8 @@ public class User {
     @NotBlank(message = "Preencha o e-mail.")
     @Column(name = "email")
     private String email;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users", cascade = {CascadeType.ALL})
+    private List<Role> roles;
 }
