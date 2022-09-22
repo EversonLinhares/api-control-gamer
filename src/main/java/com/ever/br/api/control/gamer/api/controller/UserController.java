@@ -1,12 +1,9 @@
 package com.ever.br.api.control.gamer.api.controller;
 
-import com.ever.br.api.control.gamer.api.assembler.UserAssembler;
 import com.ever.br.api.control.gamer.domain.model.dto.request.UserRequestDto;
 import com.ever.br.api.control.gamer.domain.model.dto.response.UserResponseDto;
-import com.ever.br.api.control.gamer.domain.repository.UserRepository;
 import com.ever.br.api.control.gamer.domain.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +16,13 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController  {
 
-    UserAssembler ass = new UserAssembler();
-
-    @Autowired
-    UserRepository repository;
     @Autowired
     ModelMapper modelMapper;
 
     @Autowired
     UserService userService;
-    @Autowired
-    RabbitTemplate rabbitTemplate;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<UserResponseDto> create (@Valid @RequestBody UserRequestDto userRequestDto) throws NoSuchAlgorithmException {
         return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper
                 .map(userService.create(userRequestDto), UserResponseDto.class));
@@ -39,8 +30,7 @@ public class UserController  {
 
     @GetMapping
     public List<UserResponseDto> findAll(){
-           List<UserResponseDto> list = ass.toCollectionUserResponseDto(repository.findAll());
-           return list;
+           return userService.findAll();
     }
 
     @GetMapping("/{id}")
@@ -48,5 +38,8 @@ public class UserController  {
         return ResponseEntity.ok().body(modelMapper
                 .map(userService.findById(id), UserResponseDto.class));
     }
-
+    @PutMapping("/{id}")
+    public void updateUser(@PathVariable Long id, @RequestBody UserRequestDto user) {
+        userService.updateUser(id,user);
+    }
 }

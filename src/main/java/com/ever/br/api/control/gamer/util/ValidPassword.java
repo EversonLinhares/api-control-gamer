@@ -10,7 +10,7 @@ public class ValidPassword {
 
     public Boolean validPassword(String passwordRequest, String passwordBanco) {
         Boolean valid = encoder.matches(passwordRequest,passwordBanco);
-        HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
+//        HttpStatus status = (valid) ? HttpStatus.OK : HttpStatus.UNAUTHORIZED;
         return valid;
     }
 }

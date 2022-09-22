@@ -46,6 +46,10 @@ public class User implements UserDetails, Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
+    @OneToOne(mappedBy = "user")
+    private Player player;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;
