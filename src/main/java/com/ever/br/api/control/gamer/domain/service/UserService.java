@@ -9,7 +9,6 @@ import com.ever.br.api.control.gamer.domain.model.entity.User;
 import com.ever.br.api.control.gamer.domain.repository.RoleRepository;
 import com.ever.br.api.control.gamer.domain.repository.UserRepository;
 import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
-import com.ever.br.api.control.gamer.util.ValidPassword;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,27 +35,24 @@ public class UserService  {
     @Autowired
     ModelMapper modelMapper;
 
-    public List<UserResponseDto> findAll() {
-       return  userRepository.findAll().stream().map(u -> modelMapper.map(u,UserResponseDto.class)).collect(Collectors.toList());
-    }
-
-    public User create(UserRequestDto userRequestDto) throws NoSuchAlgorithmException {
-        Optional<User> user = userRepository.findByUsername(userRequestDto.getUsername());
-        if (user.isPresent()){
+    public UserResponseDto create(UserRequestDto userRequestDto) throws NoSuchAlgorithmException {
+        if (verifyExistUser(userRequestDto.getUsername())){
             throw new DuplicatedObjectException("User already exist with username " + userRequestDto.getUsername() + "!!!");
         }
-        Long roleId = RoleNameEnums.obterRolePorNome("ROLE_USER");
-        Role role = roleRepository.findById(roleId).orElseThrow(() -> new ObjectNotFoundException("Role not found !!!"));
-
         User u = modelMapper.map(userRequestDto, User.class);
-        u.setRoles(List.of(role));
+        u.setRoles(List.of(getRole()));
         u.setPassword(encoder.encode(u.getPassword()));
-        return userRepository.save(u);
+        return modelMapper.map(userRepository.save(u), UserResponseDto.class);
     }
 
-    public User findById(Long id) {
-        return userRepository.findById(id)
+    public List<UserResponseDto> findAll() {
+        return  userRepository.findAll().stream().map(u -> modelMapper.map(u,UserResponseDto.class)).collect(Collectors.toList());
+    }
+
+    public UserResponseDto findById(Long id) {
+        User u = userRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("User not found "));
+        return modelMapper.map(u, UserResponseDto.class);
     }
 
 
@@ -67,5 +63,20 @@ public class UserService  {
         u.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(u);
 
+    }
+
+    public Boolean verifyExistUser (String name){
+        Optional<User> user = userRepository.findByUsername(name);
+        if (user.isPresent()){
+            return true;
+        }
+        return false;
+    }
+
+    public Role getRole() {
+        Long roleId = RoleNameEnums.obterRolePorNome("ROLE_USER");
+        Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new ObjectNotFoundException("Role not found !!!"));
+        return role;
     }
 }

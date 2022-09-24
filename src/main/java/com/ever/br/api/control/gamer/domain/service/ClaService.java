@@ -16,25 +16,25 @@ import java.util.stream.Collectors;
 
 @Service
 public class ClaService {
-
     @Autowired
     ClaRepository claRepository;
 
     @Autowired
     ModelMapper modelMapper;
 
-    public Cla create(ClaRequestDto claRequestDto) {
+    public ClaResponseDto create(ClaRequestDto claRequestDto) {
         Optional<Cla> claBanco = claRepository.findByName(claRequestDto.getName());
         if (claBanco.isPresent()){
             throw new DuplicatedObjectException("Cla already exist with username " + claRequestDto.getName() + "!!!");
         }
 
         Cla claSave = modelMapper.map(claRequestDto,Cla.class);
-        return claRepository.save(claSave);
+        return modelMapper.map(claRepository.save(claSave), ClaResponseDto.class);
     }
 
-    public Cla findById(Long id) {
-        return claRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Cla does not exists !!!"));
+    public ClaResponseDto findById(Long id) {
+        Cla getCla = claRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Cla does not exists !!!"));
+        return modelMapper.map(getCla, ClaResponseDto.class);
     }
 
     public List<ClaResponseDto> findAll() {

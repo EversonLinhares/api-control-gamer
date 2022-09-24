@@ -17,30 +17,25 @@ import java.util.List;
 public class ClaController {
 
     @Autowired
-    ModelMapper modelMapper;
-
-    @Autowired
     ClaService claService;
 
     @PostMapping
     public ResponseEntity<ClaResponseDto> create (@Valid @RequestBody ClaRequestDto cla) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(claService.create(cla), ClaResponseDto.class));
+        return ResponseEntity.status(HttpStatus.CREATED).body(claService.create(cla));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClaResponseDto> findById (@PathVariable Long id) {
-       return ResponseEntity.ok().body(modelMapper.map(claService.findById(id), ClaResponseDto.class));
+       return ResponseEntity.ok().body(claService.findById(id));
     }
 
     @GetMapping
-    public List<ClaResponseDto> findAll() {
-        return claService.findAll();
+    public ResponseEntity<List<ClaResponseDto>> findAll() {
+        return ResponseEntity.ok().body(claService.findAll());
     }
 
     @PutMapping("/{id}")
     public void updateCla (@PathVariable Long id ,@RequestBody ClaRequestDto claRequestDto) {
          claService.updateCla(id,claRequestDto);
     }
-
-
 }

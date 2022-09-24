@@ -15,28 +15,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController  {
-
-    @Autowired
-    ModelMapper modelMapper;
-
     @Autowired
     UserService userService;
 
     @PostMapping
     public ResponseEntity<UserResponseDto> create (@Valid @RequestBody UserRequestDto userRequestDto) throws NoSuchAlgorithmException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper
-                .map(userService.create(userRequestDto), UserResponseDto.class));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userRequestDto));
     }
 
     @GetMapping
-    public List<UserResponseDto> findAll(){
-           return userService.findAll();
+    public ResponseEntity<List<UserResponseDto>> findAll(){
+           return ResponseEntity.ok().body(userService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> findById(@PathVariable Long id){
-        return ResponseEntity.ok().body(modelMapper
-                .map(userService.findById(id), UserResponseDto.class));
+        return ResponseEntity.ok().body(userService.findById(id));
     }
     @PutMapping("/{id}")
     public void updateUser(@PathVariable Long id, @RequestBody UserRequestDto user) {

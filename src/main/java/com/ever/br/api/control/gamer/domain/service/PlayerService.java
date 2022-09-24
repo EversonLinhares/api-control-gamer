@@ -33,7 +33,7 @@ public class PlayerService {
     @Autowired
     UserRepository userRepository;
 
-    public Player create(PlayerRequestDto player) {
+    public PlayerResponseDto create(PlayerRequestDto player) {
         if(verifyExistsPlayerWithNick(player.getNick())){
             throw new DuplicatedObjectException("Player already exist with username " + player.getNick() + "!!!");
         }
@@ -43,16 +43,17 @@ public class PlayerService {
         User user = getUser();
         Player p = modelMapper.map(player, Player.class);
         p.setUser(user);
-        return playerRepository.save(p);
+        return modelMapper.map(playerRepository.save(p), PlayerResponseDto.class);
     }
 
-    public Player findById(Long id) {
-        return playerRepository.findById(id)
+    public PlayerResponseDto findById(Long id) {
+        Player getPlayer = playerRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("player not exists !!!"));
+        return modelMapper.map(getPlayer, PlayerResponseDto.class);
     }
 
-    public List<PlayerResponseDto> findAll() {
-        return playerRepository.findAll().stream().map(p -> modelMapper
+    public List<PlayerResponseDto> findAll(String nick) {
+        return playerRepository.findAll(nick).stream().map(p -> modelMapper
                 .map(p, PlayerResponseDto.class)).collect(Collectors.toList());
     }
 
@@ -91,6 +92,5 @@ public class PlayerService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User does not exist"));
         return user;
     }
-
 
 }
