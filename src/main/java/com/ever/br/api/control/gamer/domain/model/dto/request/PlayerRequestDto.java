@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -15,18 +16,28 @@ import java.math.BigDecimal;
 @Data
 public class PlayerRequestDto {
 
-    @NotBlank
+    @NotEmpty(message = "{campo.nick.obrigatorio}")
     private String nick;
 
-    @NotNull
+    @NotNull(message = "{campo.level.obrigatorio}")
     private Integer level;
 
-    @NotNull
+    @NotNull(message = "{campo.power.obrigatorio}")
     private BigDecimal power;
 
-    @NotNull
+    @NotNull(message = "{campo.codex.obrigatorio}")
     private Integer qtdCodex;
 
-    @NotNull
-    private Long claId;
+    @NotNull(message = "{campo.guild.obrigatorio}")
+    private Long guild;
+
+    @NotNull(message = "{campo.classe.obrigatorio}")
+    private Long classe;
+
+    @NotNull(message = "{campo.alt.obrigatorio}")
+    private Boolean alt;
+
+    @NotNull(message = "{campo.principal.obrigatorio}")
+    private Boolean principal;
+
 }

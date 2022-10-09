@@ -40,8 +40,23 @@ public class Player implements Serializable {
     @Column(nullable = false)
     private Integer qtdCodex;
 
+    @NotNull
+    @Column(nullable = false)
+    private Boolean alt;
+
+    @NotNull
+    @Column(nullable = false)
+    private Boolean principal;
+
+    @NotNull
+    @Column(nullable = false)
+    private Boolean ativo = true;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    private Cla cla;
+    private Guild guild;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Classe classe;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "player_user")

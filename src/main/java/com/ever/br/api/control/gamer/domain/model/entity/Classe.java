@@ -10,13 +10,14 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "tb_cla")
-public class Cla implements Serializable {
+@Table(name = "tb_classe")
+public class Classe implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,10 +29,7 @@ public class Cla implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Integer level;
-
-    @OneToMany(mappedBy = "cla", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "classe", fetch = FetchType.LAZY)
     private List<Player> players;
 
 }

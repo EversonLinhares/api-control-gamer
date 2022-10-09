@@ -4,21 +4,25 @@ import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
 import com.ever.br.api.control.gamer.domain.model.dto.request.PlayerRequestDto;
 import com.ever.br.api.control.gamer.domain.model.dto.response.PlayerResponseDto;
-import com.ever.br.api.control.gamer.domain.model.entity.Cla;
+import com.ever.br.api.control.gamer.domain.model.entity.Guild;
+import com.ever.br.api.control.gamer.domain.model.entity.Classe;
 import com.ever.br.api.control.gamer.domain.model.entity.Player;
 import com.ever.br.api.control.gamer.domain.model.entity.User;
-import com.ever.br.api.control.gamer.domain.repository.ClaRepository;
+import com.ever.br.api.control.gamer.domain.repository.GuildRepository;
+import com.ever.br.api.control.gamer.domain.repository.ClasseRepository;
 import com.ever.br.api.control.gamer.domain.repository.PlayerRepository;
 import com.ever.br.api.control.gamer.domain.repository.UserRepository;
 import com.ever.br.api.control.gamer.util.GetUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class PlayerService {
 
     @Autowired
@@ -28,22 +32,32 @@ public class PlayerService {
     PlayerRepository playerRepository;
 
     @Autowired
-    ClaRepository claRepository;
+    GuildRepository guildRepository;
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ClasseRepository classeRepository;
 
     public PlayerResponseDto create(PlayerRequestDto player) {
         if(verifyExistsPlayerWithNick(player.getNick())){
             throw new DuplicatedObjectException("Player already exist with username " + player.getNick() + "!!!");
         }
-        if (!verifyExistsCla(player.getClaId())){
-            throw new ObjectNotFoundException("Cla does not exist!!");
+        if(!verifyExistsClasseWithId(player.getClasse())){
+            throw new ObjectNotFoundException("Classe does not exist");
         }
-        User user = getUser();
+        Guild guild = verifyExistsGuild(player.getGuild());
+//        User user = getUser();
+        User user = userRepository.findById(23L).orElseThrow(() -> new ObjectNotFoundException("a"));
+        Classe classe = classeRepository.findById(player.getClasse()).orElseThrow(() -> new ObjectNotFoundException("Does not exist classe"));
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Player p = modelMapper.map(player, Player.class);
         p.setUser(user);
-        return modelMapper.map(playerRepository.save(p), PlayerResponseDto.class);
+        p.setGuild(guild);
+        p.setClasse(classe);
+        p = playerRepository.save(p);
+        return modelMapper.map(p, PlayerResponseDto.class);
     }
 
     public PlayerResponseDto findById(Long id) {
@@ -52,32 +66,52 @@ public class PlayerService {
         return modelMapper.map(getPlayer, PlayerResponseDto.class);
     }
 
-    public List<PlayerResponseDto> findAll(String nick) {
-        return playerRepository.findAll(nick).stream().map(p -> modelMapper
+    public List<PlayerResponseDto> findAll(){
+        return playerRepository.findAll().stream().map(p -> modelMapper
                 .map(p, PlayerResponseDto.class)).collect(Collectors.toList());
     }
 
+    public List<PlayerResponseDto> findAllPersonToUser(){
+        User user = getUser();
+        return playerRepository.findAllPersonToUser(user.getId()).stream().map(p -> modelMapper
+                .map(p, PlayerResponseDto.class)).collect(Collectors.toList());
+    }
+
+//    public List<PlayerResponseDto> findAll(String nick) {
+//        return playerRepository.findAll(nick).stream().map(p -> modelMapper
+//                .map(p, PlayerResponseDto.class)).collect(Collectors.toList());
+//    }
+
     public void updatePlayer(Long id, PlayerRequestDto playerRequestDto) {
-        Cla claBanco = claRepository.findById(playerRequestDto.getClaId()).orElseThrow(()-> new ObjectNotFoundException("Cla does not exists !!!"));
+        Guild guildBanco = guildRepository.findById(playerRequestDto.getGuild()).orElseThrow(()-> new ObjectNotFoundException("Guild does not exists !!!"));
         Player playerBanco = playerRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Player does not exists !!!"));
         playerBanco.setNick(playerRequestDto.getNick());
         playerBanco.setLevel(playerRequestDto.getLevel());
         playerBanco.setPower(playerRequestDto.getPower());
         playerBanco.setQtdCodex(playerRequestDto.getQtdCodex());
-        playerBanco.setCla(claBanco);
+        playerBanco.setGuild(guildBanco);
         playerRepository.save(playerBanco);
 
     }
 
-    public Boolean verifyExistsCla(Long id){
-        if(claRepository.findById(id).isPresent()){
+    public void deletePlayer(Long id){
+        playerRepository.deletePlayer(id);
+    }
+
+    public Guild verifyExistsGuild(Long id){
+        Guild guild = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("does not exist cla"));
+        return guild;
+    }
+
+    public Boolean verifyExistsPlayerWithNick(String nick) {
+        if(playerRepository.findByNick(nick).isPresent()){
             return true;
         }
         return false;
     }
 
-    public Boolean verifyExistsPlayerWithNick(String nick) {
-        if(playerRepository.findByNick(nick).isPresent()){
+    public Boolean verifyExistsClasseWithId(Long id) {
+        if(classeRepository.findById(id).isPresent()){
             return true;
         }
         return false;
