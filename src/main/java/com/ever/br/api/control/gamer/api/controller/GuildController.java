@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/guild")
-@CrossOrigin("*")
 public class GuildController {
 
     @Autowired

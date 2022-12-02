@@ -4,12 +4,12 @@ import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
 import com.ever.br.api.control.gamer.domain.model.dto.request.PlayerRequestDto;
 import com.ever.br.api.control.gamer.domain.model.dto.response.PlayerResponseDto;
-import com.ever.br.api.control.gamer.domain.model.entity.Guild;
 import com.ever.br.api.control.gamer.domain.model.entity.Classe;
+import com.ever.br.api.control.gamer.domain.model.entity.Guild;
 import com.ever.br.api.control.gamer.domain.model.entity.Player;
 import com.ever.br.api.control.gamer.domain.model.entity.User;
-import com.ever.br.api.control.gamer.domain.repository.GuildRepository;
 import com.ever.br.api.control.gamer.domain.repository.ClasseRepository;
+import com.ever.br.api.control.gamer.domain.repository.GuildRepository;
 import com.ever.br.api.control.gamer.domain.repository.PlayerRepository;
 import com.ever.br.api.control.gamer.domain.repository.UserRepository;
 import com.ever.br.api.control.gamer.util.GetUser;
@@ -44,13 +44,9 @@ public class PlayerService {
         if(verifyExistsPlayerWithNick(player.getNick())){
             throw new DuplicatedObjectException("Player already exist with username " + player.getNick() + "!!!");
         }
-        if(!verifyExistsClasseWithId(player.getClasse())){
-            throw new ObjectNotFoundException("Classe does not exist");
-        }
+        Classe classe = verifyExistsClasseWithId(player.getClasse());
         Guild guild = verifyExistsGuild(player.getGuild());
-//        User user = getUser();
-        User user = userRepository.findById(23L).orElseThrow(() -> new ObjectNotFoundException("a"));
-        Classe classe = classeRepository.findById(player.getClasse()).orElseThrow(() -> new ObjectNotFoundException("Does not exist classe"));
+        User user = getUser();
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Player p = modelMapper.map(player, Player.class);
         p.setUser(user);
@@ -66,8 +62,8 @@ public class PlayerService {
         return modelMapper.map(getPlayer, PlayerResponseDto.class);
     }
 
-    public List<PlayerResponseDto> findAll(){
-        return playerRepository.findAll().stream().map(p -> modelMapper
+    public List<PlayerResponseDto> findAll(String nick,Long level,Long power,Long qtdCodex){
+        return playerRepository.findFilter(nick,level,power,qtdCodex).stream().map(p -> modelMapper
                 .map(p, PlayerResponseDto.class)).collect(Collectors.toList());
     }
 
@@ -110,11 +106,9 @@ public class PlayerService {
         return false;
     }
 
-    public Boolean verifyExistsClasseWithId(Long id) {
-        if(classeRepository.findById(id).isPresent()){
-            return true;
-        }
-        return false;
+    public Classe verifyExistsClasseWithId(Long id) {
+        Classe classe = classeRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Does not exist classe"));
+       return classe;
     }
 
     public User getUser(){

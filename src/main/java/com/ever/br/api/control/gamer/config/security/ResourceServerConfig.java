@@ -15,9 +15,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .authorizeRequests()
 //                .antMatchers(HttpMethod.GET,"/users","/users/**").hasAnyRole("ADMIN","USER")
-                .antMatchers(HttpMethod.DELETE,"/users","/users/**").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.POST,"/users").permitAll()
-                .anyRequest().permitAll();
-//                .anyRequest().authenticated();
+//                .antMatchers(HttpMethod.DELETE,"/users","/users/**").hasAnyRole("ADMIN")
+                .antMatchers("/players","/players/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/users","/users/**").permitAll()
+                .anyRequest().authenticated();
+//               .anyRequest().permitAll();
     }
 }
