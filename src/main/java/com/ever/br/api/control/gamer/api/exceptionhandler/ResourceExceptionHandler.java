@@ -1,18 +1,14 @@
 package com.ever.br.api.control.gamer.api.exceptionhandler;
 
 import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
-
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
-import com.ever.br.api.control.gamer.domain.exception.ViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -20,22 +16,15 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ResourceExceptionHandler {
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ApiErrors handleValidationErros(MethodArgumentNotValidException ex) {
-//        BindingResult bindingResult = ex.getBindingResult();
-//        List<String> messages = bindingResult.getAllErrors()
-//                .stream()
-//                .map( objectError -> objectError.getDefaultMessage())
-//                .collect(Collectors.toList());
-//        return new ApiErrors(messages);
-//    }
-
-    @ExceptionHandler(ViolationException.class)
-    public ResponseEntity<Error> handleViolationException(ViolationException violationException){
-        return new ResponseEntity<>(new Error(violationException.getMessage()
-                ,violationException.status().value()
-                ,violationException.status().name()),violationException.status());
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrors handleValidationErros(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        List<String> messages = bindingResult.getAllErrors()
+                .stream()
+                .map( objectError -> objectError.getDefaultMessage())
+                .collect(Collectors.toList());
+        return new ApiErrors(messages);
     }
 
     @ExceptionHandler(ObjectNotFoundException.class)

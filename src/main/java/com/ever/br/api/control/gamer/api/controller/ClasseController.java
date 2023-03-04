@@ -1,5 +1,6 @@
 package com.ever.br.api.control.gamer.api.controller;
 
+import com.ever.br.api.control.gamer.domain.model.dto.request.ClasseRequestDto;
 import com.ever.br.api.control.gamer.domain.model.dto.response.ClasseResponseDto;
 import com.ever.br.api.control.gamer.domain.model.entity.Classe;
 import com.ever.br.api.control.gamer.domain.service.ClasseService;
@@ -29,7 +30,7 @@ public class ClasseController {
     }
 
     @PostMapping
-    public ResponseEntity<Classe> create(@Valid @RequestBody Classe classe){
+    public ResponseEntity<ClasseResponseDto> create(@Valid @RequestBody ClasseRequestDto classe){
       return ResponseEntity.status(HttpStatus.CREATED).body(classeService.create(classe));
     }
 }

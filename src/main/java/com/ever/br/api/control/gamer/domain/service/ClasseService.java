@@ -1,6 +1,7 @@
 package com.ever.br.api.control.gamer.domain.service;
 
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
+import com.ever.br.api.control.gamer.domain.model.dto.request.ClasseRequestDto;
 import com.ever.br.api.control.gamer.domain.model.dto.response.ClasseResponseDto;
 import com.ever.br.api.control.gamer.domain.model.entity.Classe;
 import com.ever.br.api.control.gamer.domain.repository.ClasseRepository;
@@ -29,7 +30,8 @@ public class ClasseService {
         return classeRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Does not exist classe "));
     }
 
-    public Classe create(Classe classe){
-        return classeRepository.save(classe);
+    public ClasseResponseDto create(ClasseRequestDto classe){
+        Classe classeSave = modelMapper.map(classe,Classe.class);
+        return modelMapper.map(classeRepository.save(classeSave),ClasseResponseDto.class);
     }
 }
