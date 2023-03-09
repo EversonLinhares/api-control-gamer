@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
 import java.util.List;
 
 
@@ -47,27 +46,6 @@ public class PlayerController {
         }
         return ResponseEntity.ok().body(playerService.findAll(nick,level,power,qtdCodex));
     }
-
-//    @GetMapping
-//    public ResponseEntity<List<PlayerResponseDto>> findAllPersonToUser(){
-//        return ResponseEntity.ok().body(playerService.findAllPersonToUser());
-//    }
-
-//    @GetMapping
-//    public ResponseEntity<Page<PlayerResponseDto>> findAll(
-//            @RequestParam(value = "nick",required = false) String nick,
-//            @RequestParam(name = "page", defaultValue = "0") int page,
-//            @RequestParam(name = "size", defaultValue = "30") int size,
-//            @RequestParam(name = "sort", defaultValue = "descricao") String sort
-//    ) {
-//        Pageable pagina = PageRequest.of(page,size, Sort.by(sort));
-//        List<PlayerResponseDto> players = playerService.findAll(nick);
-//        Page<PlayerResponseDto> pagePlayers = new PageImpl(players,pagina,players.size());
-//        if (players.isEmpty()){
-//            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//        }
-//        return ResponseEntity.ok().body(pagePlayers);
-//    }
 
     @PutMapping("/{id}")
     public void updatePlayer(@Valid @PathVariable Long id, @RequestBody PlayerRequestDto playerRequestDto) {
