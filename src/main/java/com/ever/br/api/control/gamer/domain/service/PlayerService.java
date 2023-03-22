@@ -73,11 +73,6 @@ public class PlayerService {
                 .map(p, PlayerResponseDto.class)).collect(Collectors.toList());
     }
 
-//    public List<PlayerResponseDto> findAll(String nick) {
-//        return playerRepository.findAll(nick).stream().map(p -> modelMapper
-//                .map(p, PlayerResponseDto.class)).collect(Collectors.toList());
-//    }
-
     public void updatePlayer(Long id, PlayerRequestDto playerRequestDto) {
         Guild guildBanco = guildRepository.findById(playerRequestDto.getGuild()).orElseThrow(()-> new ObjectNotFoundException("Guild does not exists !!!"));
         Player playerBanco = playerRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Player does not exists !!!"));

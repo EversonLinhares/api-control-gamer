@@ -24,7 +24,7 @@ public interface PlayerRepository extends JpaRepository<Player,Long> {
                             @Param("power") Long power,
                             @Param("qtdCodex") Long qtdCodex);
 
-    @Query(" select p from Player p where p.user.id = :id ")
+    @Query(" select p from Player p where p.user.id = :id and p.ativo = true ")
     List<Player> findAllPersonToUser(@Param("id") Long id);
 
     @Modifying
