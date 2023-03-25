@@ -23,9 +23,12 @@
 ## Regras do projeto
 
 ## Usuarios / Perfil / Players
+<h2> Entenda "Player" como cada Boneco que foi cadastrado pelo usuário </h2>
 <ul>
-<li>...</li>
-<li>...</li>
+<li>Usuario com perfil user, só pode visualizar/editar o "player" que foi cadastrado por ele.</li>
+<li>Apenas Usuário com perfil administrador, pode visualizar todos players e usuarios cadastrados no sistema </li>
+<li>Usuario com perfil administrador não pode editar/excluir um player cadastrado no sistema, apenas o próprio usuario que cadastrou</li>
+<li>Apenas Usuario com perfil administrador, pode cadastrar/editar outro usuario administrador </li>
 </ul>
 
 ## Observações
