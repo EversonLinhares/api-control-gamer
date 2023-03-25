@@ -22,10 +22,9 @@
 
 ## Regras do projeto
 
-## Usuarios / Perfil
+## Usuarios / Perfil / Players
 <ul>
 <li>...</li>
-## Players
 <li>...</li>
 </ul>
 
