@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,9 @@ public class UserService  {
             throw new DuplicatedObjectException("User already exist with username " + userRequestDto.getUsername() + "!!!");
         }
         User u = modelMapper.map(userRequestDto, User.class);
-        u.setRoles(List.of(getRole()));
+        if (Objects.isNull(u.getRoles())){
+            u.setRoles(List.of(getRole()));
+        }
         u.setPassword(encoder.encode(u.getPassword()));
         return modelMapper.map(userRepository.save(u), UserResponseDto.class);
     }
