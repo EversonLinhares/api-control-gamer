@@ -9,23 +9,23 @@
 ## Rodando a aplicação
  <ul>
  <li>Para rodar uma instância do banco MySQL com comando . "docker-compose up -d" , na pasta raiz do projeto.</li>
- <li>1- Rodar a aplicação com docker</li>
+ <li>1 Rodar a aplicação com docker</li>
  <li>1.1 docker build -t api-control-gamer:latest .</li>
  <li>1.2 docker run -d -p 8080:8082 api-control-gamer </li>
  </br>
- <li>2- Rodar a aplicação através do jar pela IDE </li>
- <li>Gerando o jar da aplicação com o comando "mvn clean package"</li>
- <li>java -jar target/email-0.0.1-SNAPSHOT.jar</li>
+ <li>2 Rodar a aplicação através do jar pela IDE </li>
+ <li>2.1 Gerando o jar da aplicação com o comando "mvn clean package"</li>
+ <li>2.2 java -jar target/email-0.0.1-SNAPSHOT.jar</li>
  </br>
  <li>Obs: para rodar a aplicação da primeira forma, e subir instância MySQL, é necessário o docker instalado na máquina</li>
  </ul>
 
 ## Regras do projeto
 
-##Usuarios / Perfil
+## Usuarios / Perfil
 <ul>
 <li>...</li>
-##Players
+## Players
 <li>...</li>
 </ul>
 
