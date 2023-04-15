@@ -74,8 +74,10 @@ public class PlayerService {
     }
 
     public void updatePlayer(Long id, PlayerRequestDto playerRequestDto) {
-        Guild guildBanco = guildRepository.findById(playerRequestDto.getGuild()).orElseThrow(()-> new ObjectNotFoundException("Guild does not exists !!!"));
-        Player playerBanco = playerRepository.findById(id).orElseThrow(()-> new ObjectNotFoundException("Player does not exists !!!"));
+        Guild guildBanco = guildRepository.findById(playerRequestDto.getGuild())
+                .orElseThrow(()-> new ObjectNotFoundException("Guild does not exists !!!"));
+        Player playerBanco = playerRepository.findById(id)
+                .orElseThrow(()-> new ObjectNotFoundException("Player does not exists !!!"));
         playerBanco.setNick(playerRequestDto.getNick());
         playerBanco.setLevel(playerRequestDto.getLevel());
         playerBanco.setPower(playerRequestDto.getPower());
@@ -86,7 +88,8 @@ public class PlayerService {
     }
 
     public void deletePlayer(Long id){
-        playerRepository.deletePlayer(id);
+        Player player = modelMapper.map(findById(id),Player.class);
+        playerRepository.delete(player);
     }
 
     public Guild verifyExistsGuild(Long id){

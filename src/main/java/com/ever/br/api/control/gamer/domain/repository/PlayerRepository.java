@@ -2,7 +2,6 @@ package com.ever.br.api.control.gamer.domain.repository;
 
 import com.ever.br.api.control.gamer.domain.model.entity.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -26,10 +25,6 @@ public interface PlayerRepository extends JpaRepository<Player,Long> {
 
     @Query(" select p from Player p where p.user.id = :id and p.ativo = true ")
     List<Player> findAllPersonToUser(@Param("id") Long id);
-
-    @Modifying
-    @Query(" update Player set ativo = false where id = :id " )
-    void deletePlayer(@Param("id") Long id);
 
 //    @Query(" select p from Player p " +
 //              "where (:nick is null or lower(p.nick) like lower(concat('%', :nick, '%'))) ")
