@@ -29,7 +29,7 @@ public class Guild implements Serializable {
     private String name;
 
     @Column(nullable = false)
-    private Integer level;
+    private Integer nivel;
 
     @OneToMany(mappedBy = "guild", fetch = FetchType.LAZY)
     private List<Player> players;

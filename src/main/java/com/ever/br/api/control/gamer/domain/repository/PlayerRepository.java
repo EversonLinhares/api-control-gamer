@@ -15,11 +15,11 @@ public interface PlayerRepository extends JpaRepository<Player,Long> {
     Optional<Player> findByNick(String nick);
 
     @Query(" select p from Player p where(:nick is null or lower(p.nick) like lower(concat('%', :nick, '%'))) "+
-            "and (:level is null or (p.level) = (:level)) " +
+            "and (:nivel is null or (p.nivel) = (:nivel)) " +
             "and (:power is null or (p.power) = (:power)) " +
             "and (:qtdCodex is null or (p.qtdCodex) = (:qtdCodex)) " )
     List<Player> findFilter(@Param("nick") String nick,
-                            @Param("level") Long level,
+                            @Param("nivel") Long nivel,
                             @Param("power") Long power,
                             @Param("qtdCodex") Long qtdCodex);
 

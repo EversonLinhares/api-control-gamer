@@ -19,8 +19,8 @@ public class PlayerRequestDto {
     @NotEmpty(message = "{campo.nick.obrigatorio}")
     private String nick;
 
-    @NotNull(message = "{campo.level.obrigatorio}")
-    private Integer level;
+    @NotNull(message = "{campo.nivel.obrigatorio}")
+    private Integer nivel;
 
     @NotNull(message = "{campo.power.obrigatorio}")
     private BigDecimal power;

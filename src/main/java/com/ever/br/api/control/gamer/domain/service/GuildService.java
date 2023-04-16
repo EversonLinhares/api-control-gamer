@@ -44,7 +44,7 @@ public class GuildService {
     public void updateCla(Long id, GuildRequestDto guildRequestDto) {
        Guild guildBanco = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Guild does not exists !!!"));
        guildBanco.setName(guildRequestDto.getName());
-       guildBanco.setLevel(guildRequestDto.getLevel());
+       guildBanco.setNivel(guildRequestDto.getNivel());
        guildRepository.save(guildBanco);
     }
 }

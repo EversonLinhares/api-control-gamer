@@ -79,7 +79,7 @@ public class PlayerService {
         Player playerBanco = playerRepository.findById(id)
                 .orElseThrow(()-> new ObjectNotFoundException("Player does not exists !!!"));
         playerBanco.setNick(playerRequestDto.getNick());
-        playerBanco.setLevel(playerRequestDto.getLevel());
+        playerBanco.setNivel(playerRequestDto.getNivel());
         playerBanco.setPower(playerRequestDto.getPower());
         playerBanco.setQtdCodex(playerRequestDto.getQtdCodex());
         playerBanco.setGuild(guildBanco);

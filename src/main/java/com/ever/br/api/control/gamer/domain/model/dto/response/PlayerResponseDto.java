@@ -17,7 +17,7 @@ public class PlayerResponseDto {
 
     private String nick;
 
-    private Integer level;
+    private Integer nivel;
 
     private BigDecimal power;
 

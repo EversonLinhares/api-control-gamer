@@ -13,5 +13,5 @@ public class GuildResponseDto {
 
     private Long id;
     private String name;
-    private Integer level;
+    private Integer nivel;
 }

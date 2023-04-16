@@ -33,7 +33,7 @@ public class Player implements Serializable {
 
     @NotNull
     @Column(nullable = false)
-    private Integer level;
+    private Integer nivel;
 
     @NotNull
     @Column(nullable = false,scale = 3)

@@ -16,5 +16,5 @@ public class GuildRequestDto {
     @NotBlank
     private String name;
 
-    private Integer level;
+    private Integer nivel;
 }
