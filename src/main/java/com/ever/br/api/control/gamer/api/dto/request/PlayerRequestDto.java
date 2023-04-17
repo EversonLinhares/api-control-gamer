@@ -1,4 +1,4 @@
-package com.ever.br.api.control.gamer.domain.model.dto.request;
+package com.ever.br.api.control.gamer.api.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

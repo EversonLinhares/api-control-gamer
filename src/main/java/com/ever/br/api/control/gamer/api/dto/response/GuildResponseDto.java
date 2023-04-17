@@ -1,4 +1,4 @@
-package com.ever.br.api.control.gamer.domain.model.dto.response;
+package com.ever.br.api.control.gamer.api.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class ClasseResponseDto {
+public class GuildResponseDto {
 
     private Long id;
     private String name;
+    private Integer nivel;
 }

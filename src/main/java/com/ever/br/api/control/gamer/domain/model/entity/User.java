@@ -5,19 +5,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+@SQLDelete(sql = "update tb_user set ativo = false where id = ? " )
+@Where(clause = "ativo=true")
 @Entity(name = "tb_user")
 @Data
 @AllArgsConstructor
+
 @NoArgsConstructor
 @Builder
 public class User implements UserDetails, Serializable {
@@ -48,6 +54,10 @@ public class User implements UserDetails, Serializable {
 
     @OneToOne(mappedBy = "user")
     private Player player;
+
+    @NotNull
+    @Column(nullable = false)
+    private Boolean ativo = true;
 
 
     @Override

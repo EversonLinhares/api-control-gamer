@@ -2,8 +2,8 @@ package com.ever.br.api.control.gamer.domain.service;
 
 import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
-import com.ever.br.api.control.gamer.domain.model.dto.request.GuildRequestDto;
-import com.ever.br.api.control.gamer.domain.model.dto.response.GuildResponseDto;
+import com.ever.br.api.control.gamer.api.dto.request.GuildRequestDto;
+import com.ever.br.api.control.gamer.api.dto.response.GuildResponseDto;
 import com.ever.br.api.control.gamer.domain.model.entity.Guild;
 import com.ever.br.api.control.gamer.domain.repository.GuildRepository;
 import org.modelmapper.ModelMapper;
@@ -46,5 +46,10 @@ public class GuildService {
        guildBanco.setName(guildRequestDto.getName());
        guildBanco.setNivel(guildRequestDto.getNivel());
        guildRepository.save(guildBanco);
+    }
+
+    public void deleteCla(Long id) {
+        Guild guild = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Guild does not exists !!!"));
+        guildRepository.delete(guild);
     }
 }

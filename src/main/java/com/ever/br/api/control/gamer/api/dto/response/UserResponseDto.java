@@ -1,4 +1,4 @@
-package com.ever.br.api.control.gamer.domain.model.dto.response;
+package com.ever.br.api.control.gamer.api.dto.response;
 
 import com.ever.br.api.control.gamer.domain.model.entity.Role;
 import lombok.AllArgsConstructor;

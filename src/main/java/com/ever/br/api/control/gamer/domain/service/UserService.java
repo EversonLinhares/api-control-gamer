@@ -2,8 +2,8 @@ package com.ever.br.api.control.gamer.domain.service;
 
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
 import com.ever.br.api.control.gamer.domain.enums.RoleNameEnums;
-import com.ever.br.api.control.gamer.domain.model.dto.request.UserRequestDto;
-import com.ever.br.api.control.gamer.domain.model.dto.response.UserResponseDto;
+import com.ever.br.api.control.gamer.api.dto.request.UserRequestDto;
+import com.ever.br.api.control.gamer.api.dto.response.UserResponseDto;
 import com.ever.br.api.control.gamer.domain.model.entity.Role;
 import com.ever.br.api.control.gamer.domain.model.entity.User;
 import com.ever.br.api.control.gamer.domain.repository.RoleRepository;
@@ -81,5 +81,11 @@ public class UserService  {
         Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new ObjectNotFoundException("Role not found !!!"));
         return role;
+    }
+
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("User not found "));
+        userRepository.delete(user);
     }
 }

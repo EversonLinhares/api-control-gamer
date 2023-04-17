@@ -1,7 +1,7 @@
 package com.ever.br.api.control.gamer.api.controller;
 
-import com.ever.br.api.control.gamer.domain.model.dto.request.GuildRequestDto;
-import com.ever.br.api.control.gamer.domain.model.dto.response.GuildResponseDto;
+import com.ever.br.api.control.gamer.api.dto.request.GuildRequestDto;
+import com.ever.br.api.control.gamer.api.dto.response.GuildResponseDto;
 import com.ever.br.api.control.gamer.domain.service.GuildService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,5 +36,11 @@ public class GuildController {
     @PutMapping("/{id}")
     public void updateCla (@PathVariable Long id ,@RequestBody GuildRequestDto guildRequestDto) {
          guildService.updateCla(id, guildRequestDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteCla(@PathVariable Long id) {
+        guildService.deleteCla(id);
+        return ResponseEntity.ok().build();
     }
 }

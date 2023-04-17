@@ -1,7 +1,7 @@
 package com.ever.br.api.control.gamer.api.controller;
 
-import com.ever.br.api.control.gamer.domain.model.dto.request.UserRequestDto;
-import com.ever.br.api.control.gamer.domain.model.dto.response.UserResponseDto;
+import com.ever.br.api.control.gamer.api.dto.request.UserRequestDto;
+import com.ever.br.api.control.gamer.api.dto.response.UserResponseDto;
 import com.ever.br.api.control.gamer.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,5 +34,11 @@ public class UserController  {
     @PutMapping("/{id}")
     public void updateUser(@PathVariable Long id, @RequestBody UserRequestDto user) {
         userService.updateUser(id,user);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 }

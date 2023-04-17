@@ -1,7 +1,7 @@
 package com.ever.br.api.control.gamer.api.controller;
 
-import com.ever.br.api.control.gamer.domain.model.dto.request.PlayerRequestDto;
-import com.ever.br.api.control.gamer.domain.model.dto.response.PlayerResponseDto;
+import com.ever.br.api.control.gamer.api.dto.request.PlayerRequestDto;
+import com.ever.br.api.control.gamer.api.dto.response.PlayerResponseDto;
 import com.ever.br.api.control.gamer.domain.service.PlayerService;
 import com.ever.br.api.control.gamer.util.GetUser;
 import org.modelmapper.ModelMapper;

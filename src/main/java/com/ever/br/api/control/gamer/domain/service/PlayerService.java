@@ -2,8 +2,8 @@ package com.ever.br.api.control.gamer.domain.service;
 
 import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
-import com.ever.br.api.control.gamer.domain.model.dto.request.PlayerRequestDto;
-import com.ever.br.api.control.gamer.domain.model.dto.response.PlayerResponseDto;
+import com.ever.br.api.control.gamer.api.dto.request.PlayerRequestDto;
+import com.ever.br.api.control.gamer.api.dto.response.PlayerResponseDto;
 import com.ever.br.api.control.gamer.domain.model.entity.Classe;
 import com.ever.br.api.control.gamer.domain.model.entity.Guild;
 import com.ever.br.api.control.gamer.domain.model.entity.Player;

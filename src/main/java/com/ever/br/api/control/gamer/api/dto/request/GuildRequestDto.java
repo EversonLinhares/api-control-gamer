@@ -1,17 +1,20 @@
-package com.ever.br.api.control.gamer.domain.model.dto.response;
+package com.ever.br.api.control.gamer.api.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class GuildResponseDto {
+public class GuildRequestDto {
 
-    private Long id;
+    @NotBlank
     private String name;
+
     private Integer nivel;
 }
