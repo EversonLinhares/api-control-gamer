@@ -40,7 +40,7 @@ public class PlayerService {
     @Autowired
     ClasseRepository classeRepository;
 
-    public PlayerResponseDto create(PlayerRequestDto player) {
+    public Player create(PlayerRequestDto player) {
         if(verifyExistsPlayerWithNick(player.getNick())){
             throw new DuplicatedObjectException("Player already exist with username " + player.getNick() + "!!!");
         }
@@ -52,8 +52,7 @@ public class PlayerService {
         p.setUser(user);
         p.setGuild(guild);
         p.setClasse(classe);
-        p = playerRepository.save(p);
-        return modelMapper.map(p, PlayerResponseDto.class);
+        return playerRepository.save(p);
     }
 
     public PlayerResponseDto findById(Long id) {

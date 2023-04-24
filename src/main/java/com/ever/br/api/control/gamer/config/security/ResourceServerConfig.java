@@ -14,11 +14,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-//                .antMatchers(HttpMethod.GET,"/users","/users/**").hasAnyRole("ADMIN","USER")
-//                .antMatchers(HttpMethod.DELETE,"/users","/users/**").hasAnyRole("ADMIN")
-                .antMatchers("/players","/players/**").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/users","/users/**").hasRole("ADMIN")
                 .antMatchers("/users","/users/**").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/players","/players/**").hasRole("USER")
+                .antMatchers("/players","/players/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated();
-//               .anyRequest().permitAll();
     }
 }

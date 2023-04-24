@@ -1,5 +1,6 @@
 package com.ever.br.api.control.gamer.domain.service;
 
+import com.ever.br.api.control.gamer.config.modelmapper.MapperConvert;
 import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
 import com.ever.br.api.control.gamer.api.dto.request.GuildRequestDto;
@@ -20,36 +21,36 @@ public class GuildService {
     GuildRepository guildRepository;
 
     @Autowired
-    ModelMapper modelMapper;
+    MapperConvert mapperConvert;
 
-    public GuildResponseDto create(GuildRequestDto guildRequestDto) {
+    public Guild create(GuildRequestDto guildRequestDto) {
         Optional<Guild> claBanco = guildRepository.findByName(guildRequestDto.getName());
         if (claBanco.isPresent()){
-            throw new DuplicatedObjectException("Guild already exist with username " + guildRequestDto.getName() + "!!!");
+            throw new DuplicatedObjectException("Clã already exist with username " + guildRequestDto.getName() + "!!!");
         }
 
-        Guild guildSave = modelMapper.map(guildRequestDto, Guild.class);
-        return modelMapper.map(guildRepository.save(guildSave), GuildResponseDto.class);
+        Guild guildSave = mapperConvert.mapDtoToEntity(guildRequestDto, Guild.class);
+        return guildRepository.save(guildSave);
     }
 
     public GuildResponseDto findById(Long id) {
-        Guild getGuild = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Guild does not exists !!!"));
-        return modelMapper.map(getGuild, GuildResponseDto.class);
+        Guild getGuild = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Clã does not exists !!!"));
+        return mapperConvert.mapEntityToDto(getGuild, GuildResponseDto.class);
     }
 
     public List<GuildResponseDto> findAll() {
-        return guildRepository.findAll().stream().map(c -> modelMapper.map(c, GuildResponseDto.class)).collect(Collectors.toList());
+        return mapperConvert.collectionToDto(guildRepository.findAll(),GuildResponseDto.class);
     }
 
     public void updateCla(Long id, GuildRequestDto guildRequestDto) {
-       Guild guildBanco = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Guild does not exists !!!"));
+       Guild guildBanco = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Clã does not exists !!!"));
        guildBanco.setName(guildRequestDto.getName());
        guildBanco.setNivel(guildRequestDto.getNivel());
        guildRepository.save(guildBanco);
     }
 
     public void deleteCla(Long id) {
-        Guild guild = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Guild does not exists !!!"));
+        Guild guild = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Clã does not exists !!!"));
         guildRepository.delete(guild);
     }
 }

@@ -2,15 +2,18 @@ package com.ever.br.api.control.gamer.api.controller;
 
 import com.ever.br.api.control.gamer.api.dto.request.PlayerRequestDto;
 import com.ever.br.api.control.gamer.api.dto.response.PlayerResponseDto;
+import com.ever.br.api.control.gamer.domain.model.entity.Player;
 import com.ever.br.api.control.gamer.domain.service.PlayerService;
 import com.ever.br.api.control.gamer.util.GetUser;
-import org.modelmapper.ModelMapper;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 
@@ -19,14 +22,19 @@ import java.util.List;
 public class PlayerController {
 
     @Autowired
-    ModelMapper modelMapper;
-
-    @Autowired
     PlayerService playerService;
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",description = "Player cadastrado com sucesso!"),
+            @ApiResponse(responseCode = "400",description = "requisição inválida!")
+    })
     @PostMapping
-    public ResponseEntity<PlayerResponseDto> create (@RequestBody PlayerRequestDto player) {
-        return ResponseEntity.status(HttpStatus.CREATED).body((playerService.create(player)));
+    public ResponseEntity<Void> create (@RequestBody PlayerRequestDto playerRequestDto) {
+        Player player = playerService.create(playerRequestDto);
+        URI headerLocation = UriComponentsBuilder.fromUriString("/player/{id}")
+                .buildAndExpand(player.getId())
+                .toUri();
+        return ResponseEntity.created(headerLocation).build();
     }
 
     @GetMapping("/{id}")

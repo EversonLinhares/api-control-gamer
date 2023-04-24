@@ -19,11 +19,9 @@ import java.util.Collection;
 import java.util.List;
 
 @SQLDelete(sql = "update tb_user set ativo = false where id = ? " )
-@Where(clause = "ativo=true")
 @Entity(name = "tb_user")
 @Data
 @AllArgsConstructor
-
 @NoArgsConstructor
 @Builder
 public class User implements UserDetails, Serializable {

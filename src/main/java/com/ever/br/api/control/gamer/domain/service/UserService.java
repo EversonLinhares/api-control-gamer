@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -86,6 +87,9 @@ public class UserService  {
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("User not found "));
+        for(Role role : user.getRoles()){
+            user.setRoles(new ArrayList<>());
+        }
         userRepository.delete(user);
     }
 }

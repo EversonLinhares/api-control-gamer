@@ -1,42 +1,43 @@
 package com.ever.br.api.control.gamer.domain.service;
 
-import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
 import com.ever.br.api.control.gamer.api.dto.request.ClasseRequestDto;
 import com.ever.br.api.control.gamer.api.dto.response.ClasseResponseDto;
+import com.ever.br.api.control.gamer.config.modelmapper.MapperConvert;
+import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
 import com.ever.br.api.control.gamer.domain.model.entity.Classe;
 import com.ever.br.api.control.gamer.domain.repository.ClasseRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ClasseService {
 
     @Autowired
-    ModelMapper modelMapper;
+    MapperConvert mapperConvert;
 
     @Autowired
     ClasseRepository classeRepository;
 
     public List<ClasseResponseDto> findAll(){
-        return classeRepository.findAll().stream()
-                .map(c -> modelMapper.map(c, ClasseResponseDto.class)).collect(Collectors.toList());
+        return mapperConvert.collectionToDto(classeRepository
+                .findAll(),ClasseResponseDto.class);
     }
 
-    public Classe findById(Long id){
-        return classeRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Does not exist classe "));
+    public ClasseResponseDto findById(Long id){
+        Classe classe = classeRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Does not exist classe "));
+        return mapperConvert.mapEntityToDto(classe,ClasseResponseDto.class);
     }
 
-    public ClasseResponseDto create(ClasseRequestDto classe){
-        Classe classeSave = modelMapper.map(classe,Classe.class);
-        return modelMapper.map(classeRepository.save(classeSave),ClasseResponseDto.class);
+    public Classe create(ClasseRequestDto classe){
+        return classeRepository
+                .save(mapperConvert.mapDtoToEntity(classe,Classe.class));
+
     }
 
     public void deleteClasse(Long id) {
-        Classe classe = findById(id);
-        classeRepository.delete(classe);
+        classeRepository.delete(mapperConvert.mapDtoToEntity(findById(id),Classe.class));
     }
 }
