@@ -7,7 +7,6 @@ import com.ever.br.api.control.gamer.domain.service.GuildService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -43,6 +42,10 @@ public class GuildController {
 
     @GetMapping
     public ResponseEntity<List<GuildResponseDto>> findAll() {
+        List<GuildResponseDto> listGuild = guildService.findAll();
+        if(listGuild.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok().body(guildService.findAll());
     }
 

@@ -1,15 +1,14 @@
 package com.ever.br.api.control.gamer.domain.service;
 
-import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
-import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
 import com.ever.br.api.control.gamer.api.dto.request.PlayerRequestDto;
 import com.ever.br.api.control.gamer.api.dto.response.PlayerResponseDto;
+import com.ever.br.api.control.gamer.config.modelmapper.MapperConvert;
+import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
+import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
 import com.ever.br.api.control.gamer.domain.model.entity.Classe;
 import com.ever.br.api.control.gamer.domain.model.entity.Guild;
 import com.ever.br.api.control.gamer.domain.model.entity.Player;
 import com.ever.br.api.control.gamer.domain.model.entity.User;
-import com.ever.br.api.control.gamer.domain.repository.ClasseRepository;
-import com.ever.br.api.control.gamer.domain.repository.GuildRepository;
 import com.ever.br.api.control.gamer.domain.repository.PlayerRepository;
 import com.ever.br.api.control.gamer.domain.repository.UserRepository;
 import com.ever.br.api.control.gamer.util.GetUser;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,54 +27,55 @@ public class PlayerService {
     ModelMapper modelMapper;
 
     @Autowired
-    PlayerRepository playerRepository;
+    MapperConvert mapperConvert;
 
     @Autowired
-    GuildRepository guildRepository;
+    PlayerRepository playerRepository;
+    
+    @Autowired
+    GuildService guildService;
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
-    ClasseRepository classeRepository;
+    ClasseService classeService;
 
-    public Player create(PlayerRequestDto player) {
-        if(verifyExistsPlayerWithNick(player.getNick())){
-            throw new DuplicatedObjectException("Player already exist with username " + player.getNick() + "!!!");
+    public Player create(PlayerRequestDto playerRequestDto) {
+        if(verifyExistsPlayerWithNick(playerRequestDto.getNick())){
+            throw new DuplicatedObjectException("Player already exist with username " + playerRequestDto.getNick() + "!!!");
         }
-        Classe classe = verifyExistsClasseWithId(player.getClasse());
-        Guild guild = verifyExistsGuild(player.getGuild());
+        Classe classe = verifyExistsClasseWithId(playerRequestDto.getClasse());
+        Guild guild = verifyExistsGuild(playerRequestDto.getGuild());
         User user = getUser();
         modelMapper.getConfiguration().setAmbiguityIgnored(true);
-        Player p = modelMapper.map(player, Player.class);
-        p.setUser(user);
-        p.setGuild(guild);
-        p.setClasse(classe);
-        return playerRepository.save(p);
+        Player player = modelMapper.map(playerRequestDto, Player.class);
+        player.setUser(user);
+        player.setGuild(guild);
+        player.setClasse(classe);
+        return playerRepository.save(player);
     }
 
     public PlayerResponseDto findById(Long id) {
-        Player getPlayer = playerRepository.findById(id)
+        Player player = playerRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("player not exists !!!"));
-        return modelMapper.map(getPlayer, PlayerResponseDto.class);
+        return mapperConvert.mapEntityToDto(player, PlayerResponseDto.class);
     }
 
     public List<PlayerResponseDto> findAll(String nick,Long level,Long power,Long qtdCodex){
-        return playerRepository.findFilter(nick,level,power,qtdCodex).stream().map(p -> modelMapper
-                .map(p, PlayerResponseDto.class)).collect(Collectors.toList());
+        return mapperConvert.collectionToDto(playerRepository
+                .findFilter(nick,level,power,qtdCodex),PlayerResponseDto.class);
     }
 
     public List<PlayerResponseDto> findAllPersonToUser(){
         User user = getUser();
-        return playerRepository.findAllPersonToUser(user.getId()).stream().map(p -> modelMapper
-                .map(p, PlayerResponseDto.class)).collect(Collectors.toList());
+        return mapperConvert.collectionToDto(playerRepository
+                .findAllPersonToUser(user.getId()),PlayerResponseDto.class);
     }
 
     public void updatePlayer(Long id, PlayerRequestDto playerRequestDto) {
-        Guild guildBanco = guildRepository.findById(playerRequestDto.getGuild())
-                .orElseThrow(()-> new ObjectNotFoundException("Guild does not exists !!!"));
-        Player playerBanco = playerRepository.findById(id)
-                .orElseThrow(()-> new ObjectNotFoundException("Player does not exists !!!"));
+        Guild guildBanco = mapperConvert.mapDtoToEntity(guildService.findById(playerRequestDto.getGuild()),Guild.class);
+        Player playerBanco = mapperConvert.mapDtoToEntity(findById(id),Player.class);
         playerBanco.setNick(playerRequestDto.getNick());
         playerBanco.setNivel(playerRequestDto.getNivel());
         playerBanco.setPower(playerRequestDto.getPower());
@@ -87,13 +86,12 @@ public class PlayerService {
     }
 
     public void deletePlayer(Long id){
-        Player player = modelMapper.map(findById(id),Player.class);
+        Player player = mapperConvert.mapDtoToEntity(findById(id),Player.class);
         playerRepository.delete(player);
     }
 
     public Guild verifyExistsGuild(Long id){
-        Guild guild = guildRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("does not exist cla"));
-        return guild;
+        return mapperConvert.mapDtoToEntity(guildService.findById(id),Guild.class);
     }
 
     public Boolean verifyExistsPlayerWithNick(String nick) {
@@ -104,8 +102,7 @@ public class PlayerService {
     }
 
     public Classe verifyExistsClasseWithId(Long id) {
-        Classe classe = classeRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Does not exist classe"));
-       return classe;
+       return mapperConvert.mapDtoToEntity(classeService.findById(id),Classe.class);
     }
 
     public User getUser(){

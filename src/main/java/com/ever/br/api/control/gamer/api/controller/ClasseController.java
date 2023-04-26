@@ -7,6 +7,7 @@ import com.ever.br.api.control.gamer.domain.service.ClasseService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -24,7 +25,11 @@ public class ClasseController {
 
     @GetMapping
     public ResponseEntity<List<ClasseResponseDto>> findAll(){
-        return ResponseEntity.ok().body(classeService.findAll());
+        List<ClasseResponseDto> listaClasse = classeService.findAll();
+        if(listaClasse.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(listaClasse);
     }
 
     @GetMapping("/{id}")
