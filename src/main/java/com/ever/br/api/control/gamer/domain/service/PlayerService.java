@@ -10,7 +10,6 @@ import com.ever.br.api.control.gamer.domain.model.entity.Guild;
 import com.ever.br.api.control.gamer.domain.model.entity.Player;
 import com.ever.br.api.control.gamer.domain.model.entity.User;
 import com.ever.br.api.control.gamer.domain.repository.PlayerRepository;
-import com.ever.br.api.control.gamer.domain.repository.UserRepository;
 import com.ever.br.api.control.gamer.util.GetUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class PlayerService {
     GuildService guildService;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
     ClasseService classeService;
@@ -48,7 +47,6 @@ public class PlayerService {
         Classe classe = verifyExistsClasseWithId(playerRequestDto.getClasse());
         Guild guild = verifyExistsGuild(playerRequestDto.getGuild());
         User user = getUser();
-        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         Player player = modelMapper.map(playerRequestDto, Player.class);
         player.setUser(user);
         player.setGuild(guild);
@@ -109,9 +107,9 @@ public class PlayerService {
         GetUser get = new GetUser();
         String username = get.getCurrentUser();
         if(username.isEmpty()){
-            throw new ObjectNotFoundException("Does not have a user authenticated !!!");
+            throw new ObjectNotFoundException("not have a user authenticated !!!");
         }
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User does not exist"));
+        User user = userService.verifyExistUser(username);
         return user;
     }
 
