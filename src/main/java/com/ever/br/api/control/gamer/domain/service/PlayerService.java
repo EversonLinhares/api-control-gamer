@@ -109,7 +109,7 @@ public class PlayerService {
         if(username.isEmpty()){
             throw new ObjectNotFoundException("not have a user authenticated !!!");
         }
-        User user = userService.verifyExistUser(username);
+        User user = userService.verifyExistUserWithUsername(username);
         return user;
     }
 

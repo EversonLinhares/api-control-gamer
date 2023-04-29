@@ -10,6 +10,8 @@ import com.ever.br.api.control.gamer.domain.model.entity.Role;
 import com.ever.br.api.control.gamer.domain.model.entity.User;
 import com.ever.br.api.control.gamer.domain.repository.RoleRepository;
 import com.ever.br.api.control.gamer.domain.repository.UserRepository;
+import com.ever.br.api.control.gamer.util.Email;
+import com.ever.br.api.control.gamer.util.QueueSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,14 +37,20 @@ public class UserService  {
     @Autowired
     MapperConvert mapperConvert;
 
+    @Autowired
+    QueueSender queueSender;
+
     public User create(UserRequestDto userRequestDto) throws NoSuchAlgorithmException {
-        verifyExistUser(userRequestDto.getUsername());
+        if(verifyExistUser(userRequestDto.getUsername())){
+            throw new DuplicatedObjectException("User already exist with username " + userRequestDto.getUsername() + "!!!");
+        }
 
         User u = mapperConvert.mapDtoToEntity(userRequestDto, User.class);
         if (Objects.isNull(u.getRoles())){
             u.setRoles(List.of(getRole()));
         }
         u.setPassword(encoder.encode(u.getPassword()));
+        enviarEmail(u,"Usuario criado com sucesso!");
         return userRepository.save(u);
     }
 
@@ -74,7 +82,15 @@ public class UserService  {
         }
         userRepository.delete(user);
     }
-    public User verifyExistUser (String name){
+    public Boolean verifyExistUser (String name){
+        Optional<User> user = userRepository.findByUsername(name);
+        if (user.isPresent()){
+            return true;
+    }
+        return false;
+    }
+
+    public User verifyExistUserWithUsername (String name){
         User user = userRepository.findByUsername(name)
                 .orElseThrow(() -> new ObjectNotFoundException("User not exist"));
         return user;
@@ -86,4 +102,10 @@ public class UserService  {
                 .orElseThrow(() -> new ObjectNotFoundException("Role not found !!!"));
         return role;
     }
+    // TODO: 29/04/2023 Colocar as mensagens e texto de emails No AppConstansts pra ser utilizado
+    private void enviarEmail(User user, String titulo) {
+        Email emailEnvio = queueSender.montarEmailEnvio(user.getEmail(), titulo,"teste");
+        queueSender.send(emailEnvio);
+    }
+
 }

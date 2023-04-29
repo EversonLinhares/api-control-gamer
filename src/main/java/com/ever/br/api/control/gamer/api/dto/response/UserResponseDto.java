@@ -14,8 +14,10 @@ import java.util.List;
 @Builder
 public class UserResponseDto {
 
+    private Long id;
     private String username;
     private String email;
     private List<Role> roles;
+    private Boolean ativo;
 
 }
