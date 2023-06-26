@@ -5,7 +5,7 @@ import com.ever.br.api.control.gamer.api.dto.response.GuildResponseDto;
 import com.ever.br.api.control.gamer.config.modelmapper.MapperConvert;
 import com.ever.br.api.control.gamer.domain.exception.DuplicatedObjectException;
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
-import com.ever.br.api.control.gamer.domain.model.entity.Guild;
+import com.ever.br.api.control.gamer.domain.model.Guild;
 import com.ever.br.api.control.gamer.domain.repository.GuildRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

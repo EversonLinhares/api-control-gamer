@@ -1,6 +1,6 @@
 package com.ever.br.api.control.gamer.api.dto.response;
 
-import com.ever.br.api.control.gamer.domain.model.entity.Role;
+import com.ever.br.api.control.gamer.domain.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

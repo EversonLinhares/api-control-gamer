@@ -4,7 +4,7 @@ import com.ever.br.api.control.gamer.api.dto.request.ClasseRequestDto;
 import com.ever.br.api.control.gamer.api.dto.response.ClasseResponseDto;
 import com.ever.br.api.control.gamer.config.modelmapper.MapperConvert;
 import com.ever.br.api.control.gamer.domain.exception.ObjectNotFoundException;
-import com.ever.br.api.control.gamer.domain.model.entity.Classe;
+import com.ever.br.api.control.gamer.domain.model.Classe;
 import com.ever.br.api.control.gamer.domain.repository.ClasseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

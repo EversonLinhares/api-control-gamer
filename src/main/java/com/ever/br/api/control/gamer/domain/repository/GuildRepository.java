@@ -1,6 +1,6 @@
 package com.ever.br.api.control.gamer.domain.repository;
 
-import com.ever.br.api.control.gamer.domain.model.entity.Guild;
+import com.ever.br.api.control.gamer.domain.model.Guild;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

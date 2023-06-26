@@ -2,7 +2,7 @@ package com.ever.br.api.control.gamer.api.controller;
 
 import com.ever.br.api.control.gamer.api.dto.request.GuildRequestDto;
 import com.ever.br.api.control.gamer.api.dto.response.GuildResponseDto;
-import com.ever.br.api.control.gamer.domain.model.entity.Guild;
+import com.ever.br.api.control.gamer.domain.model.Guild;
 import com.ever.br.api.control.gamer.domain.service.GuildService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

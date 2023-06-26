@@ -1,6 +1,6 @@
 package com.ever.br.api.control.gamer.config.security;
 
-import com.ever.br.api.control.gamer.domain.model.entity.User;
+import com.ever.br.api.control.gamer.domain.model.User;
 import com.ever.br.api.control.gamer.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

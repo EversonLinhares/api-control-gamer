@@ -2,7 +2,7 @@ package com.ever.br.api.control.gamer.api.controller;
 
 import com.ever.br.api.control.gamer.api.dto.request.UserRequestDto;
 import com.ever.br.api.control.gamer.api.dto.response.UserResponseDto;
-import com.ever.br.api.control.gamer.domain.model.entity.User;
+import com.ever.br.api.control.gamer.domain.model.User;
 import com.ever.br.api.control.gamer.domain.service.UserService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

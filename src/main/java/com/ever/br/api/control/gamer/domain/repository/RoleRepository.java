@@ -1,6 +1,6 @@
 package com.ever.br.api.control.gamer.domain.repository;
 
-import com.ever.br.api.control.gamer.domain.model.entity.Role;
+import com.ever.br.api.control.gamer.domain.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

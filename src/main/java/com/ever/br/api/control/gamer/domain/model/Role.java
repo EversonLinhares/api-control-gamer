@@ -1,4 +1,4 @@
-package com.ever.br.api.control.gamer.domain.model.entity;
+package com.ever.br.api.control.gamer.domain.model;
 
 import com.ever.br.api.control.gamer.domain.enums.RoleNameEnums;
 import lombok.AllArgsConstructor;

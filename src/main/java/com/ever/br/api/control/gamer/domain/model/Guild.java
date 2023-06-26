@@ -1,4 +1,4 @@
-package com.ever.br.api.control.gamer.domain.model.entity;
+package com.ever.br.api.control.gamer.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,10 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-@SQLDelete(sql = "update tb_classe set ativo = false where id = ? " )
+@SQLDelete(sql = "update tb_guild set ativo = false where id = ? " )
 @Where(clause = "ativo=true")
-@Table(name = "tb_classe")
-public class Classe implements Serializable {
+@Table(name = "tb_guild")
+public class Guild implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,10 @@ public class Classe implements Serializable {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "classe", fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    private Integer nivel;
+
+    @OneToMany(mappedBy = "guild", fetch = FetchType.LAZY)
     private List<Player> players;
 
     @NotNull
@@ -41,4 +44,3 @@ public class Classe implements Serializable {
     private Boolean ativo = true;
 
 }
-
